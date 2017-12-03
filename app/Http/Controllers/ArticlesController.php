@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\LikeUsers;
+use App\Http\Resources\UserArticles;
 use App\Models\Topic;
 use App\Models\Article;
 use Illuminate\Http\Request;
@@ -76,5 +77,10 @@ class ArticlesController extends Controller
     public function likeUsers(Request $request,Article $article)
     {
         return succeed(['users' => LikeUsers::collection($article->likes()->orderBy('created_at','desc')->paginate(10))]);
+    }
+
+    public function focusArticle(Request $request)
+    {
+        return succeed(['articles' => UserArticles::collection(auth()->user()->articles()->orderBy('created_at','desc')->paginate(10))]);
     }
 }

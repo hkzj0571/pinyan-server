@@ -22,9 +22,15 @@ class Article extends Model
         return $query->where('title', 'like', "%{$keyword}%");
     }
 
-    public function getPureContentAttribute($value)
+    public function getPureContentAttribute()
     {
-        return mb_substr(strip_tags(str_replace("&nbsp;", '', htmlspecialchars_decode($this->content))), 0, 100, 'utf-8');
+        return mb_substr(strip_tags(str_replace("&nbsp;", '', htmlspecialchars_decode($this->content))), 0, 150, 'utf-8');
+    }
+
+    public function getCoverAttribute()
+    {
+        preg_match_all("/<[img|IMG].*?src=[\'|\"](.*?(?:[\.gif|\.jpg|\.png]))[\'|\"].*?[\/]?>/", $this->content, $result);
+        return @$result[1][0];
     }
 
     public function user()

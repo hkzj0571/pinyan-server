@@ -17,6 +17,7 @@ class UserArticles extends Resource
         return [
             'id'             => $this->id,
             'title'          => $this->title,
+            'cover'          => $this->cover,
             'content'        => $this->pure_content,
             'read_count'     => $this->read_count,
             'like_count'     => $this->like_count,
