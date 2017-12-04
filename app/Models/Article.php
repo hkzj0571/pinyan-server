@@ -29,8 +29,8 @@ class Article extends Model
 
     public function getCoverAttribute()
     {
-        preg_match_all("/<[img|IMG].*?src=[\'|\"](.*?(?:[\.gif|\.jpg|\.png]))[\'|\"].*?[\/]?>/", $this->content, $result);
-        return @$result[1][0];
+        preg_match_all("/<[img|IMG].*?src=[\'|\"](.*?(?:[\.gif|\.jpg|\.png|\.jpeg]))[\'|\"].*?[\/]?>/",$this->content,$result);
+        return @array_collapse($result)[1];
     }
 
     public function user()

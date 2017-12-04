@@ -78,9 +78,4 @@ class ArticlesController extends Controller
     {
         return succeed(['users' => LikeUsers::collection($article->likes()->orderBy('created_at','desc')->paginate(10))]);
     }
-
-    public function focusArticle(Request $request)
-    {
-        return succeed(['articles' => UserArticles::collection(auth()->user()->articles()->orderBy('created_at','desc')->paginate(10))]);
-    }
 }
