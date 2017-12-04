@@ -38,19 +38,28 @@ Route::prefix(api_version())->group(function($router) {
             $router->put('basic', 'UsersController@basic');
             $router->put('profile', 'UsersController@profile');
             $router->post('articles', 'UsersController@articles');
-            $router->post('focus_article','UsersController@focusArticle');
+            $router->post('focus_article', 'UsersController@focusArticle');
         });
 
         Route::prefix('article')->group(function($router) {
             $router->post('select_topic', 'ArticlesController@selectTopics');
             $router->post('store', 'ArticlesController@store');
             $router->post('{article}/like', 'ArticlesController@like');
-            $router->post('{article}/is_like','ArticlesController@isLike');
-            $router->post('{article}/like_users','ArticlesController@likeUsers');
+            $router->post('{article}/is_like', 'ArticlesController@isLike');
+            $router->post('{article}/like_users', 'ArticlesController@likeUsers');
         });
 
         Route::prefix('comments')->group(function($router) {
             $router->post('store', 'CommentsController@store');
+        });
+
+        Route::prefix('topics')->group(function($router) {
+            $router->post('store','TopicsController@store');
+            $router->post('{topic}/new_articles', 'TopicsController@newArticles');
+            $router->post('{topic}/hot_articles', 'TopicsController@hotArticles');
+            $router->post('{topic}/is_focus', 'TopicsController@isFocus');
+            $router->post('{topic}/focus', 'TopicsController@focus');
+            $router->post('{topic}', 'TopicsController@topic');
         });
 
     });

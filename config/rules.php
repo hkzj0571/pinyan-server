@@ -46,4 +46,12 @@ return [
             'reply_id'   => 'nullable|numeric|exists:comments,id',
         ],
     ],
+
+    'topics' => [
+        'store' => [
+            'name'     => 'required|string|between:2,50|unique:topics',
+            'cover'    => 'required|string|url|max:191',
+            'describe' => 'required|string|max:1000',
+        ],
+    ],
 ];

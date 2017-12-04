@@ -1,0 +1,54 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Resources\TopicDetail;
+use App\Models\Topic;
+use Illuminate\Http\Request;
+use App\Http\Resources\UserArticles;
+use App\Http\Resources\Topic as TopicResource;
+
+class TopicsController extends Controller
+{
+    public function newArticles(Request $request, Topic $topic)
+    {
+        return succeed(['articles' => UserArticles::collection($topic->articles()->orderBy('created_at', 'desc')->paginate(10))]);
+    }
+
+    public function hotArticles(Request $request, Topic $topic)
+    {
+        return succeed(['articles' => UserArticles::collection($topic->articles()->orderBy('read_count', 'desc')->paginate(10))]);
+    }
+
+    public function isFocus(Request $request, Topic $topic)
+    {
+        return succeed(['is_focus' => $topic->users()->where('user_id', auth()->user()->id)->exists()]);
+    }
+
+    public function focus(Request $request, Topic $topic)
+    {
+        $toggled = $topic->users()->toggle(auth()->user()->id);
+
+        $toggled['attached']
+            ? $topic->increment('follower_count')
+            : $topic->decrement('follower_count');
+
+        return succeed(['type' => $toggled['attached'] ? 'attached' : 'detached']);
+    }
+
+    public function topic(Request $request, Topic $topic)
+    {
+        return succeed(['topic' => new TopicDetail($topic)]);
+    }
+
+    public function store(Request $request)
+    {
+        $needs = $this->validate($request, rules('topics.store'));
+
+        $topic = Topic::create($needs);
+
+        $topic->manageUsers()->attach(auth()->user()->id, ['is_creator' => true]);
+
+        return succeed(['topic' => new TopicResource($topic)]);
+    }
+}

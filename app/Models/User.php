@@ -111,16 +111,36 @@ class User extends Authenticatable
 
     public function follows()
     {
-        return $this->belongsToMany(self::class, 'follows', 'follower_id', 'followed_id')->withTimestamps();
+        return $this->belongsToMany(self::class, 'users_follow_users', 'follower_id', 'followed_id')->withTimestamps();
     }
 
     public function likes()
     {
-        return $this->belongsToMany(Article::class, 'likes')->withTimestamps();
+        return $this->belongsToMany(Article::class, 'users_like_articles')->withTimestamps();
     }
 
     public function comments()
     {
         return $this->hasMany(Comment::class);
+    }
+
+    public function topics()
+    {
+        return $this->belongsToMany(Topic::class,'users_focus_topics');
+    }
+
+    public function manageTopics()
+    {
+        return $this->belongsToMany(Topic::class,'users_manage_topics')->withTimestamps()->withPivot('is_creator');
+    }
+
+    public function creatorTopics()
+    {
+        return $this->belongsToMany(Topic::class,'users_manage_topics')->withTimestamps()->wherePivot('is_creator',true);
+    }
+
+    public function manatorTopics()
+    {
+        return $this->belongsToMany(Topic::class,'users_manage_topics')->withTimestamps()->wherePivot('is_creator',false);
     }
 }

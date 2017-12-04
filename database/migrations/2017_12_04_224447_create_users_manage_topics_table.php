@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateFollowsTable extends Migration
+class CreateUsersManageTopicsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateFollowsTable extends Migration
      */
     public function up()
     {
-        Schema::create('follows', function(Blueprint $table) {
+        Schema::create('users_manage_topics', function(Blueprint $table) {
             $table->increments('id');
-            $table->integer('follower_id')->references('id')->on('users')->onDelete('cascade')->comment('关注者ID');
-            $table->integer('followed_id')->references('id')->on('users')->onDelete('cascade')->comment('被关注者ID');
+            $table->integer('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->integer('topic_id')->references('id')->on('topics')->onDelete('cascade');
+            $table->boolean('is_creator')->default(false);
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class CreateFollowsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('follows');
+        Schema::dropIfExists('users_manage_topics');
     }
 }

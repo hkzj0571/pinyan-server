@@ -20,4 +20,24 @@ class Topic extends Model
     {
         return $query->where('name', 'like', "%{$keyword}%");
     }
+
+    public function articles()
+    {
+        return $this->hasMany(Article::class);
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'users_focus_topics');
+    }
+
+    public function manageUsers()
+    {
+        return $this->belongsToMany(User::class,'users_manage_topics')->withTimestamps()->withPivot('is_creator');
+    }
+
+    public function creatorUser()
+    {
+        return $this->belongsToMany(User::class,'users_manage_topics')->withTimestamps()->wherePivot('is_creator',true);
+    }
 }
