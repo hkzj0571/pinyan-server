@@ -22,7 +22,7 @@ class TopicDetail extends Resource
             'article_count'  => $this->article_count,
             'follower_count' => $this->follower_count,
             'creator'        => new User($this->creatorUser()->first()),
-            'manages'        => $this->manageUsers()->orderBy('created_at', 'desc')->get(),
+            'manages'        => ManageUsers::collection($this->manageUsers()->orderBy('created_at', 'desc')->get()),
             'created_at'     => $this->created_at,
         ];
     }

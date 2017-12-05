@@ -70,7 +70,13 @@ class TopicsController extends Controller
             return failed('专题名已存在');
         }
 
-        $topic->update($needs);
+        $topic->update(array_except($needs, 'manages'));
+
+        $topic->manageUsers()->detach();
+
+        $topic->manageUsers()->attach(auth()->user()->id, ['is_creator' => true]);
+
+        $topic->manageUsers()->attach($needs['manages']);
 
         return succeed('专题已更新');
     }

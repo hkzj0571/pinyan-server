@@ -78,4 +78,13 @@ class ArticlesController extends Controller
     {
         return succeed(['users' => LikeUsers::collection($article->likes()->orderBy('created_at','desc')->paginate(10))]);
     }
+
+    public function update(Request $request,Article $article)
+    {
+        $needs = $this->validate($request, rules('article.update'));
+
+        $article->update($needs);
+
+        return succeed('文章更新成功');
+    }
 }

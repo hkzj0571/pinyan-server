@@ -37,6 +37,11 @@ return [
             'topic_id' => 'required|numeric|exists:topics,id',
             'content'  => 'required|string|between:2,100000',
         ],
+        'update' => [
+            'title'    => 'required|string|between:2,50',
+            'topic_id' => 'required|numeric|exists:topics,id',
+            'content'  => 'required|string|between:2,100000',
+        ],
     ],
 
     'comments' => [

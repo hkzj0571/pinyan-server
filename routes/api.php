@@ -44,6 +44,7 @@ Route::prefix(api_version())->group(function($router) {
         Route::prefix('article')->group(function($router) {
             $router->post('select_topic', 'ArticlesController@selectTopics');
             $router->post('store', 'ArticlesController@store');
+            $router->put('{article}', 'ArticlesController@update');
             $router->post('{article}/like', 'ArticlesController@like');
             $router->post('{article}/is_like', 'ArticlesController@isLike');
             $router->post('{article}/like_users', 'ArticlesController@likeUsers');
