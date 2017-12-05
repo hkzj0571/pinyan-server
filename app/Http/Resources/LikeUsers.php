@@ -19,7 +19,9 @@ class LikeUsers extends Resource
             'avatar'     => $this->avatar,
             'name'       => $this->name,
             'gender'     => $this->gender,
-            'created_at' => hommization($this->pivot->created_at),
+            'created_at' => $this->when($this->pivot,function(){
+                return hommization($this->pivot->created_at);
+            }),
         ];
     }
 }

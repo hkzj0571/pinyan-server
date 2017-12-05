@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\LikeUsers;
 use App\Http\Resources\TopicDetail;
 use App\Models\Topic;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Resources\UserArticles;
 use App\Http\Resources\Topic as TopicResource;
@@ -45,9 +47,11 @@ class TopicsController extends Controller
     {
         $needs = $this->validate($request, rules('topics.store'));
 
-        $topic = Topic::create($needs);
+        $topic = Topic::create(array_except($needs, 'manages'));
 
         $topic->manageUsers()->attach(auth()->user()->id, ['is_creator' => true]);
+
+        $topic->manageUsers()->attach($needs['manages']);
 
         return succeed(['topic' => new TopicResource($topic)]);
     }
@@ -60,14 +64,30 @@ class TopicsController extends Controller
             return failed('你没有权限修改此话题');
         }
 
-        $needs = $this->validate($request,rules('topics.update'));
+        $needs = $this->validate($request, rules('topics.update'));
 
-        if ($needs['name'] != $topic->name && Topic::where('name',$needs['name'])->exists()) {
+        if ($needs['name'] != $topic->name && Topic::where('name', $needs['name'])->exists()) {
             return failed('专题名已存在');
         }
 
         $topic->update($needs);
 
         return succeed('专题已更新');
+    }
+
+    public function users(Request $request)
+    {
+        return succeed([
+           'users' => request()->query('query')
+               ? LikeUsers::collection(
+                   User::active()->like(request()->query('query'))->where('id','!=',auth()->user()->id)->limit(10)->get()
+               )
+               : [],
+       ]);
+    }
+
+    public function usersIn(Request $request)
+    {
+        return $request->all();
     }
 }

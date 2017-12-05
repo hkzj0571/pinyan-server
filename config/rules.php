@@ -48,15 +48,17 @@ return [
     ],
 
     'topics' => [
-        'store' => [
+        'store'  => [
             'name'     => 'required|string|between:1,50|unique:topics',
             'cover'    => 'required|string|url|max:191',
             'describe' => 'required|string|max:1000',
+            'manages'  => 'nullable|array',
         ],
         'update' => [
             'name'     => 'required|string|between:1,50',
             'cover'    => 'required|string|url|max:191',
             'describe' => 'required|string|max:1000',
+            'manages'  => 'nullable|array',
         ],
     ],
 ];

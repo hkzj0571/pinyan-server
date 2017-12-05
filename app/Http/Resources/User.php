@@ -25,6 +25,7 @@ class User extends Resource
             'describe'      => $this->describe,
             'resume'        => $this->resume,
             'wechat_qrcode' => $this->wechat_qrcode,
+            'create_topics' => Topic::collection($this->creatorTopics()->orderBy('created_at', 'desc')->get()),
             'created_at'    => $this->created_at,
         ];
     }

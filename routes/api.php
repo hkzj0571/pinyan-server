@@ -22,7 +22,7 @@ Route::prefix(api_version())->group(function($router) {
 
     $router->get('article/{article}', 'ArticlesController@show');
 
-    $router->get('user/{user}', 'UsersController@look');
+    $router->get('user/{user}', 'UsersController@show');
 
     Route::middleware('auth:api')->group(function($router) {
         $router->get('logout', 'AuthController@logout');
@@ -55,12 +55,14 @@ Route::prefix(api_version())->group(function($router) {
 
         Route::prefix('topics')->group(function($router) {
             $router->post('store', 'TopicsController@store');
+            $router->post('users_in','TopicsController@usersIn');
             $router->post('{topic}/new_articles', 'TopicsController@newArticles');
             $router->post('{topic}/hot_articles', 'TopicsController@hotArticles');
             $router->post('{topic}/is_focus', 'TopicsController@isFocus');
             $router->post('{topic}/focus', 'TopicsController@focus');
             $router->post('{topic}', 'TopicsController@topic');
             $router->put('{topic}', 'TopicsController@update');
+            $router->get('users','TopicsController@users');
         });
 
     });

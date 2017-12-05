@@ -97,7 +97,7 @@ class UsersController extends Controller
         return succeed(['user' => new UserResource(auth()->user())]);
     }
 
-    public function look(User $user)
+    public function show(User $user)
     {
         return succeed(['user' => new UserResource($user)]);
     }

@@ -21,7 +21,8 @@ class TopicDetail extends Resource
             'describe'       => $this->describe,
             'article_count'  => $this->article_count,
             'follower_count' => $this->follower_count,
-            'creator'        => $this->creatorUser()->first(),
+            'creator'        => new User($this->creatorUser()->first()),
+            'manages'        => $this->manageUsers()->orderBy('created_at', 'desc')->get(),
             'created_at'     => $this->created_at,
         ];
     }

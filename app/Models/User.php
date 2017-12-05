@@ -63,6 +63,11 @@ class User extends Authenticatable
         return $query->where('is_active', $is_active);
     }
 
+    public function scopeLike($query, $keyword = '')
+    {
+        return $query->where('name', 'like', "%{$keyword}%");
+    }
+
     /**
      * 修改器，对密码进行 Hash 加密
      *
@@ -126,21 +131,21 @@ class User extends Authenticatable
 
     public function topics()
     {
-        return $this->belongsToMany(Topic::class,'users_focus_topics');
+        return $this->belongsToMany(Topic::class, 'users_focus_topics');
     }
 
     public function manageTopics()
     {
-        return $this->belongsToMany(Topic::class,'users_manage_topics')->withTimestamps()->withPivot('is_creator');
+        return $this->belongsToMany(Topic::class, 'users_manage_topics')->withTimestamps()->withPivot('is_creator');
     }
 
     public function creatorTopics()
     {
-        return $this->belongsToMany(Topic::class,'users_manage_topics')->withTimestamps()->wherePivot('is_creator',true);
+        return $this->belongsToMany(Topic::class, 'users_manage_topics')->withTimestamps()->wherePivot('is_creator', true);
     }
 
     public function manatorTopics()
     {
-        return $this->belongsToMany(Topic::class,'users_manage_topics')->withTimestamps()->wherePivot('is_creator',false);
+        return $this->belongsToMany(Topic::class, 'users_manage_topics')->withTimestamps()->wherePivot('is_creator', false);
     }
 }
