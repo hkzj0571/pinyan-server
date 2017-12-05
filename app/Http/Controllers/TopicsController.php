@@ -51,4 +51,23 @@ class TopicsController extends Controller
 
         return succeed(['topic' => new TopicResource($topic)]);
     }
+
+    public function update(Request $request, Topic $topic)
+    {
+        $creator = $topic->creatorUser()->first();
+
+        if ($creator->id !== auth()->user()->id) {
+            return failed('你没有权限修改此话题');
+        }
+
+        $needs = $this->validate($request,rules('topics.update'));
+
+        if ($needs['name'] != $topic->name && Topic::where('name',$needs['name'])->exists()) {
+            return failed('专题名已存在');
+        }
+
+        $topic->update($needs);
+
+        return succeed('专题已更新');
+    }
 }

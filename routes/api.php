@@ -54,12 +54,13 @@ Route::prefix(api_version())->group(function($router) {
         });
 
         Route::prefix('topics')->group(function($router) {
-            $router->post('store','TopicsController@store');
+            $router->post('store', 'TopicsController@store');
             $router->post('{topic}/new_articles', 'TopicsController@newArticles');
             $router->post('{topic}/hot_articles', 'TopicsController@hotArticles');
             $router->post('{topic}/is_focus', 'TopicsController@isFocus');
             $router->post('{topic}/focus', 'TopicsController@focus');
             $router->post('{topic}', 'TopicsController@topic');
+            $router->put('{topic}', 'TopicsController@update');
         });
 
     });
