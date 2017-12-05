@@ -28,7 +28,7 @@ class Topic extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'users_focus_topics');
+        return $this->belongsToMany(User::class, 'users_focus_topics')->withTimestamps();
     }
 
     public function manageUsers()

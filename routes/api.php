@@ -39,6 +39,7 @@ Route::prefix(api_version())->group(function($router) {
             $router->put('profile', 'UsersController@profile');
             $router->post('articles', 'UsersController@articles');
             $router->post('focus_article', 'UsersController@focusArticle');
+            $router->post('focus_topics', 'UsersController@focusTopics');
         });
 
         Route::prefix('article')->group(function($router) {

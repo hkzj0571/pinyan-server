@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\Topic;
 use App\Http\Resources\UserArticles;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -110,5 +111,10 @@ class UsersController extends Controller
     public function focusArticle(Request $request)
     {
         return succeed(['articles' => UserArticles::collection(auth()->user()->likes()->orderBy('created_at','desc')->paginate(10))]);
+    }
+
+    public function focusTopics(Request $request)
+    {
+        return succeed(['topics' => Topic::collection(auth()->user()->topics()->orderBy('created_at','desc')->paginate(10))]);
     }
 }

@@ -99,6 +99,11 @@ class User extends Authenticatable
         return $this->update(['active_token' => str_random(64)]);
     }
 
+    /**
+     * 用户发表的文章
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function articles()
     {
         return $this->hasMany(Article::class);
@@ -131,7 +136,7 @@ class User extends Authenticatable
 
     public function topics()
     {
-        return $this->belongsToMany(Topic::class, 'users_focus_topics');
+        return $this->belongsToMany(Topic::class, 'users_focus_topics')->withTimestamps();
     }
 
     public function manageTopics()
