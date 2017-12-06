@@ -61,6 +61,11 @@ class User extends Authenticatable
         $this->attributes['password'] = bcrypt($password);
     }
 
+    public function getResumeAttribute($resume)
+    {
+        return nl2br($resume);
+    }
+
     /**
      * 访问器，如果头像为空返回默认头像
      *
