@@ -31,12 +31,3 @@ function api_version()
 {
     return str_finish(config('api.version'), '/');
 }
-
-function rand_avatar()
-{
-    $avatar = array_random(cache()->remember('default_avatars', 30, function() {
-        return app(App\Models\Avatar::class)->nasty()->get()->toArray();
-    }));
-
-    return $avatar['url'];
-}

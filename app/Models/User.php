@@ -63,6 +63,13 @@ class User extends Authenticatable
         return $query->where('is_active', $is_active);
     }
 
+    /**
+     * 本地作用域，附加查询条件：模糊查询名字
+     *
+     * @param $query
+     * @param string $keyword
+     * @return mixed
+     */
     public function scopeLike($query, $keyword = '')
     {
         return $query->where('name', 'like', "%{$keyword}%");
@@ -76,6 +83,17 @@ class User extends Authenticatable
     public function setPasswordAttribute($password)
     {
         $this->attributes['password'] = bcrypt($password);
+    }
+
+    /**
+     * 访问器，如果头像为空返回默认头像
+     *
+     * @param $avatar
+     * @return string
+     */
+    public function getAvatarAttribute($avatar)
+    {
+        return $avatar ? : 'http://p03uyojkp.bkt.clouddn.com/min-avatar.jpg';
     }
 
     /**
@@ -119,36 +137,71 @@ class User extends Authenticatable
         return $this->update(['forget_token' => str_random(64)]);
     }
 
+    /**
+     * 用户关注的用户
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function follows()
     {
         return $this->belongsToMany(self::class, 'users_follow_users', 'follower_id', 'followed_id')->withTimestamps();
     }
 
+    /**
+     * 用户喜欢的文章
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function likes()
     {
         return $this->belongsToMany(Article::class, 'users_like_articles')->withTimestamps();
     }
 
+    /**
+     * 用户发表的评论
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function comments()
     {
         return $this->hasMany(Comment::class);
     }
 
+    /**
+     * 用户关注的专题
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function topics()
     {
         return $this->belongsToMany(Topic::class, 'users_focus_topics')->withTimestamps();
     }
 
+    /**
+     * 与用户相关的专题
+     *
+     * @return $this
+     */
     public function manageTopics()
     {
         return $this->belongsToMany(Topic::class, 'users_manage_topics')->withTimestamps()->withPivot('is_creator');
     }
 
+    /**
+     * 用户是创建者的专题
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function creatorTopics()
     {
         return $this->belongsToMany(Topic::class, 'users_manage_topics')->withTimestamps()->wherePivot('is_creator', true);
     }
 
+    /**
+     * 用户是管理者的专题
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function manatorTopics()
     {
         return $this->belongsToMany(Topic::class, 'users_manage_topics')->withTimestamps()->wherePivot('is_creator', false);

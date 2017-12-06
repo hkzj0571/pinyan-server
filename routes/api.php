@@ -45,7 +45,7 @@ Route::prefix(api_version())->group(function($router) {
 
         Route::prefix('user')->group(function($router) {
             /* 拉取信息 */
-            $router->get('refresh', 'UsersController@refresh');
+            $router->post('refresh', 'UsersController@refresh');
             /* 更新头像 */
             $router->put('avatar', 'UsersController@avatar');
             /* 更新微信二维码 */
