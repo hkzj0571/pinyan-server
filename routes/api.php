@@ -16,69 +16,78 @@ use Illuminate\Http\Request;
 
 Route::prefix(api_version())->group(function($router) {
 
-    // 登陆
+    /* 登陆 */
     $router->post('login', 'AuthController@login');
 
-    // 注册
+    /* 注册 */
     $router->post('register', 'AuthController@register');
 
-    // 用户激活
+    /* 用户激活 */
     $router->post('active', 'AuthController@active');
 
-    // 展示文章
+    /* 展示文章 */
     $router->get('article/{article}', 'ArticlesController@show');
 
-    // 展示用户
+    /* 展示用户 */
     $router->get('user/{user}', 'UsersController@show');
 
-    /**
-     * 以下路由需要携带经过Passport Token 才可以访问
-     */
+    /* 以下路由需要携带经过Passport Token 才可以访问 */
     Route::middleware('auth:api')->group(function($router) {
-        // 退出
+        /* 退出 */
         $router->get('logout', 'AuthController@logout');
 
-        // 重新发送验证邮件
+        /* 重新发送验证邮件 */
         $router->get('reset', 'AuthController@reset');
 
-        // 获取上传文件的 Token
+        /* 获取上传文件的 Token */
         $router->get('upload/token', 'UploadController@token');
 
 
         Route::prefix('user')->group(function($router) {
-            // 拉取信息
+            /* 拉取信息 */
             $router->get('refresh', 'UsersController@refresh');
-            // 更新头像
+            /* 更新头像 */
             $router->put('avatar', 'UsersController@avatar');
-            // 更新微信二维码
+            /* 更新微信二维码 */
             $router->put('wechat_qrcode', 'UsersController@wechatQrCode');
-            // 删除微信二维码
+            /* 删除微信二维码 */
             $router->delete('wechat_qrcode', 'UsersController@removeWechatQrCode');
-            // 更新基本资料
+            /* 更新基本资料 */
             $router->put('basic', 'UsersController@basic');
-            // 更新个人资料
+            /* 更新个人资料 */
             $router->put('profile', 'UsersController@profile');
-            // 发表文章
+            /* 发表文章 */
             $router->post('articles', 'UsersController@articles');
-            $router->post('focus_article', 'UsersController@focusArticle');
-            $router->post('focus_topics', 'UsersController@focusTopics');
+            /* 喜欢的文章 */
+            $router->get('like_article', 'UsersController@likeArticle');
+            /* 关注的专题 */
+            $router->get('focus_topics', 'UsersController@focusTopics');
         });
 
         Route::prefix('article')->group(function($router) {
-            $router->post('select_topic', 'ArticlesController@selectTopics');
+            /* 拉取新增文章时的专题 */
+            $router->get('topic', 'ArticlesController@topics');
+            /* 新增文章 */
             $router->post('store', 'ArticlesController@store');
+            /* 更新文章 */
             $router->put('{article}', 'ArticlesController@update');
+            /* 喜欢这篇文章 */
             $router->post('{article}/like', 'ArticlesController@like');
+            /* 判断当前用户是否喜欢了这篇文章 */
             $router->post('{article}/is_like', 'ArticlesController@isLike');
+            /* 拉取喜欢这篇文章的用户 */
             $router->post('{article}/like_users', 'ArticlesController@likeUsers');
         });
 
         Route::prefix('comments')->group(function($router) {
+            /* 新增评论 */
             $router->post('store', 'CommentsController@store');
         });
 
         Route::prefix('topics')->group(function($router) {
+            /* 新增专题 */
             $router->post('store', 'TopicsController@store');
+            /**/
             $router->post('users_in', 'TopicsController@usersIn');
             $router->post('{topic}/new_articles', 'TopicsController@newArticles');
             $router->post('{topic}/hot_articles', 'TopicsController@hotArticles');

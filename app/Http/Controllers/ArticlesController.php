@@ -21,7 +21,7 @@ class ArticlesController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function selectTopics(Request $request)
+    public function topics(Request $request)
     {
         return succeed([
            'topics' => request('query')
