@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\LikeUsers;
-use App\Http\Resources\UserArticles;
 use App\Models\Topic;
 use App\Models\Article;
 use Illuminate\Http\Request;
-use App\Http\Resources\User as UserResource;
-use App\Http\Resources\Topic as TopicResource;
-use App\Http\Resources\Article as ArticleResource;
-
+use App\Http\Resources\UserSimple;
+use App\Http\Resources\TopicSimple;
+use App\Http\Resources\ArticleSimple;
+use App\Http\Resources\ArticleComplex;
 
 class ArticlesController extends Controller
 {
@@ -23,13 +21,11 @@ class ArticlesController extends Controller
      */
     public function topics(Request $request)
     {
-        return succeed([
-           'topics' => request('query')
-               ? TopicResource::collection(
-                   Topic::active()->like(request('query'))->limit(10)->get()
-               )
-               : [],
-       ]);
+        $topics = TopicSimple::collection(
+            Topic::active()->like(request('query'))->limit(10)->get()
+        );
+
+        return succeed(['topics' => $topics]);
     }
 
     /**
@@ -44,15 +40,15 @@ class ArticlesController extends Controller
 
         $needs['user_id'] = auth()->user()->id;
 
-        Article::create($needs);
+        $article = Article::create($needs);
 
-        return succeed('文章发布成功');
+        return succeed(['article' => new ArticleSimple($article)]);
     }
 
     public function show(Request $request, Article $article)
     {
         $article->increment('read_count');
-        return succeed(['article' => new ArticleResource($article)]);
+        return succeed(['article' => new ArticleComplex($article)]);
     }
 
     /**
@@ -69,17 +65,33 @@ class ArticlesController extends Controller
         return succeed(['type' => $toggled['attached'] ? 'attached' : 'detached']);
     }
 
+    /**
+     * 判断用户是否喜欢此文章
+     *
+     * @param Request $request
+     * @param Article $article
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function isLike(Request $request, Article $article)
     {
         return succeed(['is_like' => $article->likes()->where('user_id', auth()->user()->id)->exists()]);
     }
 
-    public function likeUsers(Request $request,Article $article)
+    /**
+     * 获取喜欢此文章的用户
+     *
+     * @param Request $request
+     * @param Article $article
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function likeUsers(Request $request, Article $article)
     {
-        return succeed(['users' => LikeUsers::collection($article->likes()->orderBy('created_at','desc')->paginate(10))]);
+        $users = UserSimple::collection($article->likes()->orderBy('created_at', 'desc')->paginate(10));
+
+        return succeed(['users' => $users]);
     }
 
-    public function update(Request $request,Article $article)
+    public function update(Request $request, Article $article)
     {
         $needs = $this->validate($request, rules('article.update'));
 

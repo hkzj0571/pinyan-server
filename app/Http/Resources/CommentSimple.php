@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\Resource;
 
-class LikeUsers extends Resource
+class CommentSimple extends Resource
 {
     /**
      * Transform the resource into an array.
@@ -16,12 +16,10 @@ class LikeUsers extends Resource
     {
         return [
             'id'         => $this->id,
-            'avatar'     => $this->avatar,
-            'name'       => $this->name,
-            'gender'     => $this->gender,
-            'created_at' => $this->when($this->pivot,function(){
-                return hommization($this->pivot->created_at);
-            }),
+            'content'    => $this->content,
+            'user'       => new UserSimple($this->user),
+            'vote_count' => $this->vote_count,
+            'created_at' => $this->created_at,
         ];
     }
 }

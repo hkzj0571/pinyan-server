@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\Resource;
 
-class TopicDetail extends Resource
+class ArticleSimple extends Resource
 {
     /**
      * Transform the resource into an array.
@@ -16,13 +16,14 @@ class TopicDetail extends Resource
     {
         return [
             'id'             => $this->id,
+            'title'          => $this->title,
             'cover'          => $this->cover,
-            'name'           => $this->name,
-            'describe'       => $this->describe,
-            'article_count'  => $this->article_count,
-            'follower_count' => $this->follower_count,
-            'creator'        => new User($this->creatorUser()->first()),
-            'manages'        => ManageUsers::collection($this->manageUsers()->orderBy('created_at', 'desc')->get()),
+            'content'        => $this->pure_content,
+            'read_count'     => $this->read_count,
+            'like_count'     => $this->like_count,
+            'topic'          => new TopicSimple($this->topic),
+            'user'           => new UserSimple($this->user),
+            'comments_count' => $this->comments()->count(),
             'created_at'     => $this->created_at,
         ];
     }

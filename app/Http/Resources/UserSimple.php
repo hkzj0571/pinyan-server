@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\Resource;
 
-class ManageUsers extends Resource
+class UserSimple extends Resource
 {
     /**
      * Transform the resource into an array.
@@ -19,7 +19,10 @@ class ManageUsers extends Resource
             'avatar'     => $this->avatar,
             'name'       => $this->name,
             'gender'     => $this->gender,
-            'is_creator' => $this->when($this->pivot,$this->pivot->is_creator),
+            'like_at'    => $this->when($this->pivot && @$this->pivot->created_at, function() {
+                return hommization($this->pivot->created_at);
+            }),
+            'is_creator' => $this->when($this->pivot, @$this->pivot->is_creator),
         ];
     }
 }

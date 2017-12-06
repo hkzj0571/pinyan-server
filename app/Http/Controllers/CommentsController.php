@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\Comment as CommentResource;
 use App\Models\Comment;
 use Illuminate\Http\Request;
+use App\Http\Resources\CommentSimple;
 
 class CommentsController extends Controller
 {
@@ -16,6 +16,6 @@ class CommentsController extends Controller
 
         $comment = Comment::create($needs);
 
-        return succeed(['comment' => new CommentResource($comment)]);
+        return succeed(['comment' => new CommentSimple($comment)]);
     }
 }

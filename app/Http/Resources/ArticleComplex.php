@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\Resource;
 
-class Article extends Resource
+class ArticleComplex extends Resource
 {
     /**
      * Transform the resource into an array.
@@ -20,8 +20,8 @@ class Article extends Resource
             'content'        => $this->content,
             'read_count'     => $this->read_count,
             'like_count'     => $this->like_count,
-            'topic'          => new Topic($this->topic),
-            'user'           => new User($this->user),
+            'topic'          => new TopicSimple($this->topic),
+            'user'           => new UserSimple($this->user),
             'comments'       => Comment::collection($this->comments()->orderBy('created_at', 'desc')->get()),
             'comments_count' => $this->comments->count(),
             'created_at'     => $this->created_at,

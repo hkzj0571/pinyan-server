@@ -11,31 +11,52 @@ class Topic extends Model
 
     protected $guarded = [];
 
-    public function scopeActive($query, $is_active = true)
+    /**
+     * 访问器，对 describe 属性进行换行操作
+     *
+     * @param $describe
+     * @return string
+     */
+    public function getDescribeAttribute($describe)
     {
-        return $query->where('is_active', $is_active);
+        return nl2br($describe);
     }
 
-    public function scopeLike($query, $keyword = '')
-    {
-        return $query->where('name', 'like', "%{$keyword}%");
-    }
-
+    /**
+     * 属于此专题的文章
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function articles()
     {
         return $this->hasMany(Article::class);
     }
 
+    /**
+     * 关注了此专题的用户
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function users()
     {
         return $this->belongsToMany(User::class, 'users_focus_topics')->withTimestamps();
     }
 
+    /**
+     * 此专题的管理用户与创建者
+     *
+     * @return $this
+     */
     public function manageUsers()
     {
         return $this->belongsToMany(User::class,'users_manage_topics')->withTimestamps()->withPivot('is_creator');
     }
 
+    /**
+     * 此专题的创建者
+     *
+     * @return $this
+     */
     public function creatorUser()
     {
         return $this->belongsToMany(User::class,'users_manage_topics')->withTimestamps()->wherePivot('is_creator',true);

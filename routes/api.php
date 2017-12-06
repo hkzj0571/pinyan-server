@@ -26,13 +26,14 @@ Route::prefix(api_version())->group(function($router) {
     $router->post('active', 'AuthController@active');
 
     /* 展示文章 */
-    $router->get('article/{article}', 'ArticlesController@show');
+    $router->get('article/{article}', 'ArticlesController@show')->where('article', '[0-9]+');
 
     /* 展示用户 */
-    $router->get('user/{user}', 'UsersController@show');
+    $router->get('user/{user}', 'UsersController@show')->where('user', '[0-9]+');
 
     /* 以下路由需要携带经过Passport Token 才可以访问 */
     Route::middleware('auth:api')->group(function($router) {
+
         /* 退出 */
         $router->get('logout', 'AuthController@logout');
 

@@ -2,24 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\LikeUsers;
-use App\Http\Resources\TopicDetail;
 use App\Models\Topic;
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Http\Resources\UserArticles;
-use App\Http\Resources\Topic as TopicResource;
+use App\Http\Resources\UserSimple;
+use App\Http\Resources\TopicSimple;
+use App\Http\Resources\TopicComplex;
+use App\Http\Resources\ArticleSimple;
 
 class TopicsController extends Controller
 {
     public function newArticles(Request $request, Topic $topic)
     {
-        return succeed(['articles' => UserArticles::collection($topic->articles()->orderBy('created_at', 'desc')->paginate(10))]);
+        return succeed(['articles' => ArticleSimple::collection($topic->articles()->orderBy('created_at', 'desc')->paginate(10))]);
     }
 
     public function hotArticles(Request $request, Topic $topic)
     {
-        return succeed(['articles' => UserArticles::collection($topic->articles()->orderBy('read_count', 'desc')->paginate(10))]);
+        return succeed(['articles' => ArticleSimple::collection($topic->articles()->orderBy('read_count', 'desc')->paginate(10))]);
     }
 
     public function isFocus(Request $request, Topic $topic)
@@ -40,7 +40,7 @@ class TopicsController extends Controller
 
     public function topic(Request $request, Topic $topic)
     {
-        return succeed(['topic' => new TopicDetail($topic)]);
+        return succeed(['topic' => new TopicComplex($topic)]);
     }
 
     public function store(Request $request)
@@ -53,7 +53,7 @@ class TopicsController extends Controller
 
         $topic->manageUsers()->attach($needs['manages']);
 
-        return succeed(['topic' => new TopicResource($topic)]);
+        return succeed(['topic' => new TopicSimple($topic)]);
     }
 
     public function update(Request $request, Topic $topic)
@@ -85,7 +85,7 @@ class TopicsController extends Controller
     {
         return succeed([
            'users' => request()->query('query')
-               ? LikeUsers::collection(
+               ? UserSimple::collection(
                    User::active()->like(request()->query('query'))->where('id','!=',auth()->user()->id)->limit(10)->get()
                )
                : [],

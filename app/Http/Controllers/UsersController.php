@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\Topic;
-use App\Http\Resources\UserArticles;
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Http\Resources\User as UserResource;
+use App\Http\Resources\TopicSimple;
+use App\Http\Resources\UserComplex;
+use App\Http\Resources\ArticleSimple;
 use App\Exceptions\VerificationException;
 
 class UsersController extends Controller
@@ -38,7 +38,8 @@ class UsersController extends Controller
     {
         $needs = $this->validate($request, rules('basic'));
 
-        if ($needs['name'] != auth()->user()->name
+        if (
+            $needs['name'] != auth()->user()->name
             && User::name($needs['name'])->exists()
         ) {
             throw new VerificationException('昵称已被使用，换一个吧');
@@ -95,26 +96,75 @@ class UsersController extends Controller
      */
     public function refresh(Request $request)
     {
-        return succeed(['user' => new UserResource(auth()->user())]);
+        return succeed(
+            [
+                'user' => new UserComplex(auth()->user()),
+            ]
+        );
     }
 
+    /**
+     * 显示用户个人主页
+     *
+     * @param User $user
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function show(User $user)
     {
-        return succeed(['user' => new UserResource($user)]);
+        return succeed(
+            [
+                'user' => new UserComplex($user),
+            ]
+        );
     }
 
+    /**
+     * 用户发表的文章
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function articles(Request $request)
     {
-        return succeed(['articles' => UserArticles::collection(auth()->user()->articles()->orderBy('created_at','desc')->paginate(10))]);
+        $articles = auth()->user()->articles()->orderBy('created_at', 'desc')->paginate(10);
+        return succeed(
+            [
+                'articles' => ArticleSimple::collection($articles),
+            ]
+        );
     }
 
+    /**
+     * 用户喜欢的文章
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function likeArticle(Request $request)
     {
-        return succeed(['articles' => UserArticles::collection(auth()->user()->likes()->orderBy('created_at','desc')->paginate(10))]);
+        $articles = auth()->user()->likes()->orderBy('created_at', 'desc')->paginate(10);
+
+        return succeed(
+            [
+                'articles' => ArticleSimple::collection($articles),
+            ]
+        );
     }
 
+    /**
+     * 用户关注的专题
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function focusTopics(Request $request)
     {
-        return succeed(['topics' => Topic::collection(auth()->user()->topics()->orderBy('created_at','desc')->paginate(10))]);
+        $topics = auth()->user()->topics()->orderBy('created_at', 'desc')->paginate(10);
+
+        return succeed(
+            [
+                'topics' => TopicSimple::collection($topics),
+            ]
+        );
     }
 }

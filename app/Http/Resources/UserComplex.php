@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\Resource;
 
-class User extends Resource
+class UserComplex extends Resource
 {
     /**
      * Transform the resource into an array.
@@ -25,7 +25,7 @@ class User extends Resource
             'describe'      => $this->describe,
             'resume'        => $this->resume,
             'wechat_qrcode' => $this->wechat_qrcode,
-            'create_topics' => Topic::collection($this->creatorTopics()->orderBy('created_at', 'desc')->get()),
+            'create_topics' => TopicSimple::collection($this->creatorTopics()->orderBy('created_at', 'desc')->get()),
             'created_at'    => $this->created_at,
         ];
     }
