@@ -19,6 +19,7 @@ class CreateCommentsTable extends Migration
             $table->integer('article_id')->references('id')->on('articles')->onDelete('cascade');
             $table->integer('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer('reply_id')->references('id')->on('comments')->onDelete('cascade')->nullable()->comment('回复评论的id');
+            $table->integer('vote_count')->default(0);
             $table->timestamps();
         });
     }

@@ -28,6 +28,6 @@ class CreateUsersLikeArticlesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('likes');
+        Schema::dropIfExists('users_like_articles');
     }
 }
