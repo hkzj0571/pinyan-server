@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\UserRegisterd;
 use App\Exceptions\UnauthorizedException;
+use App\Http\Resources\UserComplex;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Traits\ProxyHelpers;
@@ -35,7 +36,7 @@ class AuthController extends Controller
 
         $tokens = $this->authenticate();
 
-        return succeed(['token' => $tokens, 'user' => new \App\Http\Resources\User($user)]);
+        return succeed(['token' => $tokens, 'user' => new UserComplex($user)]);
     }
 
     /**
@@ -54,7 +55,7 @@ class AuthController extends Controller
 
         $tokens = $this->authenticate();
 
-        return succeed(['token' => $tokens, 'user' => new \App\Http\Resources\User($user)]);
+        return succeed(['token' => $tokens, 'user' => new UserComplex($user)]);
     }
 
     /**

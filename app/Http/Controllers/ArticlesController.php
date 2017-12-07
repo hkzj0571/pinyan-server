@@ -101,21 +101,23 @@ class ArticlesController extends Controller
 
     public function comments(Request $request, Article $article)
     {
-        $sort     = $request->get('sort');
-        $only     = $request->get('only');
-
-        $comments = $article->comments()->whereNull('reply_id')->when($only, function($query) use ($article) {
+        $build = $article->comments()->whereNull('reply_id')->when(request('only'), function($query) use ($article) {
             return $query->where('user_id', $article->user_id);
-        })->where(function($query) use ($sort) {
-            switch ($sort) {
-                case 'desc':
-                    return $query->orderBy('created_at', 'desc');
-                case 'asc':
-                    return $query->orderBy('created_at', 'asc');
-                default:
-                    return $query->orderBy('vote_count', 'desc');
-            }
-        })->paginate(10);
+        });
+
+        switch (\request('sort')) {
+            case 'asc':
+                $build->orderBy('created_at', 'asc');
+                break;
+            case 'desc':
+                $build->orderBy('created_at', 'desc');
+                break;
+            default:
+                $build->orderBy('created_at', 'desc');
+                break;
+        }
+
+        $comments = $build->paginate(10);
 
         return succeed(['comments' => CommentComplex::collection($comments)]);
     }

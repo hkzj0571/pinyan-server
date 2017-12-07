@@ -83,7 +83,7 @@ Route::prefix(api_version())->group(function($router) {
             /* 拉取喜欢这篇文章的用户 */
             $router->post('{article}/users', 'ArticlesController@users');
             /** 拉取这篇文章的评论 */
-            $router->get('{article}/comments', 'ArticlesController@comments');
+            $router->post('{article}/comments', 'ArticlesController@comments');
         });
 
         Route::prefix('comments')->group(function($router) {
