@@ -17,7 +17,7 @@ class CommentComplex extends Resource
         return [
             'id'         => $this->id,
             'content'    => $this->content,
-            'user'       => new User($this->user),
+            'user'       => new UserSimple($this->user),
             'vote_count' => $this->vote_count,
             'created_at' => $this->created_at,
         ];

@@ -194,4 +194,13 @@ class UsersController extends Controller
 
         return succeed(['followers' => $followers]);
     }
+
+    public function follow(Request $request)
+    {
+        $user_id = array_first($this->validate($request,rules('user.follow')));
+
+        auth()->user()->followeds()->toggle($user_id);
+
+        return succeed();
+    }
 }

@@ -6,6 +6,12 @@ return [
         'password' => 'required|string|min:6|max:30',
     ],
 
+    'user'     => [
+        'follow' => [
+            'user_id' => 'required|numeric|exists:users,id',
+        ],
+    ],
+
     'register' => [
         'name'     => 'required|string|between:2,12|unique:users',
         'email'    => 'required|string|email|max:50|unique:users',
@@ -32,7 +38,7 @@ return [
     ],
 
     'article' => [
-        'store' => [
+        'store'  => [
             'title'    => 'required|string|between:2,50',
             'topic_id' => 'required|numeric|exists:topics,id',
             'content'  => 'required|string|between:2,100000',

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CommentComplex;
 use App\Models\Topic;
 use App\Models\Article;
 use Illuminate\Http\Request;
@@ -96,5 +97,11 @@ class ArticlesController extends Controller
         $article->update($needs);
 
         return succeed('文章更新成功');
+    }
+
+    public function comments(Request $request, Article $article)
+    {
+        $comments = $article->comments()->whereNull('reply_id')->orderBy('created_at','desc')->paginate(10);
+        return succeed(['comments' => CommentComplex::collection($comments)]);
     }
 }

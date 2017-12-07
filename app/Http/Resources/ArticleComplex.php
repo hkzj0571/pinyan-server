@@ -20,7 +20,7 @@ class ArticleComplex extends Resource
             'content'        => $this->content,
             'read_count'     => $this->read_count,
             'like_count'     => $this->like_count,
-            'is_like'        => !auth()->check() ? : $this->users()->where('user_id', auth()->user()->id)->exists(),
+            'is_like'        => auth()->guard('api')->check() ? $this->users()->where('user_id', auth()->guard('api')->user()->id)->exists() : false,
             'topic'          => new TopicSimple($this->topic),
             'user'           => new UserSimple($this->user),
             'comments_count' => $this->comments->count(),

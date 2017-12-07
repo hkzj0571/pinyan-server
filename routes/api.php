@@ -68,7 +68,7 @@ Route::prefix(api_version())->group(function($router) {
             /** 关注我的人 */
             $router->get('follower','UsersController@follower');
             /** 关注用户 */
-            $router->get('follow','UsersController@follow');
+            $router->post('follow','UsersController@follow');
         });
 
         Route::prefix('article')->group(function($router) {
@@ -82,6 +82,8 @@ Route::prefix(api_version())->group(function($router) {
             $router->post('{article}/like', 'ArticlesController@like');
             /* 拉取喜欢这篇文章的用户 */
             $router->post('{article}/users', 'ArticlesController@users');
+            /** 拉取这篇文章的评论 */
+            $router->get('{article}/comments', 'ArticlesController@comments');
         });
 
         Route::prefix('comments')->group(function($router) {

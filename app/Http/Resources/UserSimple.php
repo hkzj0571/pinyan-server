@@ -29,9 +29,7 @@ class UserSimple extends Resource
                 return hommization($this->pivot->created_at);
             }),
             'is_creator'       => $this->when($this->pivot, @$this->pivot->is_creator),
-            'is_follow'        => $this->when(auth()->check(), function() {
-                return auth()->user()->followed()->where('user_id', $this->id)->exists();
-            }),
+            'is_follow'        => auth()->guard('api')->check() ? auth()->guard('api')->user()->followeds()->where('followed_id', $this->id)->exists() : false,
         ];
     }
 }
