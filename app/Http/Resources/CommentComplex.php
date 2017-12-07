@@ -14,6 +14,12 @@ class CommentComplex extends Resource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id'         => $this->id,
+            'content'    => $this->content,
+            'user'       => new User($this->user),
+            'vote_count' => $this->vote_count,
+            'created_at' => $this->created_at,
+        ];
     }
 }

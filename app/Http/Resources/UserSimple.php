@@ -15,14 +15,19 @@ class UserSimple extends Resource
     public function toArray($request)
     {
         return [
-            'id'         => $this->id,
-            'avatar'     => $this->avatar,
-            'name'       => $this->name,
-            'gender'     => $this->gender,
-            'like_at'    => $this->when($this->pivot && @$this->pivot->created_at, function() {
+            'id'               => $this->id,
+            'avatar'           => $this->avatar,
+            'name'             => $this->name,
+            'gender'           => $this->gender,
+            'follower_count'  => $this->follower_count,
+            'followed_count'  => $this->followed_count,
+            'article_count'   => $this->article_count,
+            'gender'           => $this->gender,
+            'describe'           => $this->describe,
+            'pivot_created_at' => $this->when($this->pivot && @$this->pivot->created_at, function() {
                 return hommization($this->pivot->created_at);
             }),
-            'is_creator' => $this->when($this->pivot, @$this->pivot->is_creator),
+            'is_creator'       => $this->when($this->pivot, @$this->pivot->is_creator),
         ];
     }
 }

@@ -61,9 +61,33 @@ class User extends Authenticatable
         $this->attributes['password'] = bcrypt($password);
     }
 
-    public function getResumeAttribute($resume)
+
+    /**
+     * 关注该用户的人数
+     *
+     * @return int
+     */
+    public function getFollowerCountAttribute()
     {
-        return nl2br($resume);
+        return $this->followers()->count();
+    }
+
+    /**
+     * 该用户关注的人数
+     *
+     * @return int
+     */
+    public function getFollowedCountAttribute()
+    {
+        return $this->followeds()->count();
+    }
+
+    /**
+     * @return int
+     */
+    public function getArticleCountAttribute()
+    {
+        return $this->articles()->count();
     }
 
     /**
@@ -123,9 +147,19 @@ class User extends Authenticatable
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function follows()
+    public function followeds()
     {
         return $this->belongsToMany(self::class, 'users_follow_users', 'follower_id', 'followed_id')->withTimestamps();
+    }
+
+    /**
+     * 关注用户的用户
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function followers()
+    {
+        return $this->belongsToMany(self::class, 'users_follow_users', 'followed_id', 'follower_id')->withTimestamps();
     }
 
     /**

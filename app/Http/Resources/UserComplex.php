@@ -25,6 +25,9 @@ class UserComplex extends Resource
             'describe'      => $this->describe,
             'resume'        => $this->resume,
             'wechat_qrcode' => $this->wechat_qrcode,
+            'follower_count'  => $this->follower_count,
+            'followed_count'  => $this->followed_count,
+            'article_count'   => $this->article_count,
             'create_topics' => TopicSimple::collection($this->creatorTopics()->orderBy('created_at', 'desc')->get()),
             'created_at'    => $this->created_at,
         ];

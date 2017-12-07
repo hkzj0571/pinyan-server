@@ -63,6 +63,10 @@ Route::prefix(api_version())->group(function($router) {
             $router->get('like_article', 'UsersController@likeArticle');
             /* 关注的专题 */
             $router->get('focus_topics', 'UsersController@focusTopics');
+            /** 我关注的人 */
+            $router->get('followed','UsersController@followed');
+            /** 关注我的人 */
+            $router->get('follower','UsersController@follower');
         });
 
         Route::prefix('article')->group(function($router) {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserSimple;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Resources\TopicSimple;
@@ -166,5 +167,31 @@ class UsersController extends Controller
                 'topics' => TopicSimple::collection($topics),
             ]
         );
+    }
+
+    /**
+     * 用户关注的用户
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function followed(Request $request)
+    {
+        $followeds = UserSimple::collection(auth()->user()->followeds()->orderBy('created_at', 'desc')->paginate(10));
+
+        return succeed(['followeds' => $followeds]);
+    }
+
+    /**
+     * 关注用户的用户
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function follower(Request $request)
+    {
+        $followers = UserSimple::collection(auth()->user()->followers()->orderBy('created_at', 'desc')->paginate(10));
+
+        return succeed(['followers' => $followers]);
     }
 }
