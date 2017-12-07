@@ -21,8 +21,10 @@ class CommentsController extends Controller
 
     public function vote(Request $request,Comment $comment)
     {
-        $comment->votes()->toggle(auth()->user()->id);
+        $result = count($comment->votes()->toggle(auth()->user()->id)['attached']);
 
-        return succeed();
+        $result ? $comment->increment('vote_count') : $comment->decrement('vote_count');
+
+        return succeed(['type' => $result]);
     }
 }

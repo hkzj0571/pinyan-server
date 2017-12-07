@@ -113,7 +113,7 @@ class ArticlesController extends Controller
                 $build->orderBy('created_at', 'desc');
                 break;
             default:
-                $build->orderBy('created_at', 'desc');
+                $build->orderBy('vote_count', 'desc');
                 break;
         }
 

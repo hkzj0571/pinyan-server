@@ -19,6 +19,7 @@ class CommentSimple extends Resource
             'content'    => $this->content,
             'user'       => new UserSimple($this->user),
             'vote_count' => $this->vote_count,
+            'is_vote' =>  auth()->guard('api')->check() ? auth()->guard('api')->user()->votes()->where('comment_id', $this->id)->exists() : false,
             'created_at' => $this->created_at,
         ];
     }
