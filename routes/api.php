@@ -89,6 +89,8 @@ Route::prefix(api_version())->group(function($router) {
         Route::prefix('comments')->group(function($router) {
             /* 新增评论 */
             $router->post('store', 'CommentsController@store');
+            /** 点赞或者取消评论 */
+            $router->post('{comment}/vote','CommentsController@vote');
         });
 
         Route::prefix('topics')->group(function($router) {

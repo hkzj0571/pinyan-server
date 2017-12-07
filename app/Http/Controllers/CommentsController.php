@@ -18,4 +18,11 @@ class CommentsController extends Controller
 
         return succeed(['comment' => new CommentSimple($comment)]);
     }
+
+    public function vote(Request $request,Comment $comment)
+    {
+        $comment->votes()->toggle(auth()->user()->id);
+
+        return succeed();
+    }
 }

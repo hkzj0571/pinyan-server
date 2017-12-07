@@ -64,6 +64,6 @@ class Comment extends Model
      */
     public function votes()
     {
-        return $this->belongsToMany(User::class,'users_vote_comments');
+        return $this->belongsToMany(User::class,'users_vote_comments')->withTimestamps();
     }
 }

@@ -237,6 +237,6 @@ class User extends Authenticatable
      */
     public function votes()
     {
-        return $this->belongsToMany(Comment::class,'users_vote_comments');
+        return $this->belongsToMany(Comment::class,'users_vote_comments')->withTimestamps();
     }
 }
