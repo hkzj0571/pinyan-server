@@ -19,15 +19,19 @@ class UserSimple extends Resource
             'avatar'           => $this->avatar,
             'name'             => $this->name,
             'gender'           => $this->gender,
-            'follower_count'  => $this->follower_count,
-            'followed_count'  => $this->followed_count,
-            'article_count'   => $this->article_count,
+            'follower_count'   => $this->follower_count,
+            'followed_count'   => $this->followed_count,
+            'article_count'    => $this->article_count,
             'gender'           => $this->gender,
-            'describe'           => $this->describe,
+            'resume'           => $this->resume,
+            'describe'         => $this->describe,
             'pivot_created_at' => $this->when($this->pivot && @$this->pivot->created_at, function() {
                 return hommization($this->pivot->created_at);
             }),
             'is_creator'       => $this->when($this->pivot, @$this->pivot->is_creator),
+            'is_follow'        => $this->when(auth()->check(), function() {
+                return auth()->user()->followed()->where('user_id', $this->id)->exists();
+            }),
         ];
     }
 }

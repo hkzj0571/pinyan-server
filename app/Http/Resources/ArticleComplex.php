@@ -23,7 +23,6 @@ class ArticleComplex extends Resource
             'is_like'        => !auth()->check() ? : $this->users()->where('user_id', auth()->user()->id)->exists(),
             'topic'          => new TopicSimple($this->topic),
             'user'           => new UserSimple($this->user),
-            'comments'       => CommentComplex::collection($this->comments()->orderBy('created_at', 'desc')->get()),
             'comments_count' => $this->comments->count(),
             'created_at'     => $this->created_at,
             'updated_at'     => $this->updated_at,

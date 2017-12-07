@@ -75,7 +75,7 @@ class ArticlesController extends Controller
      * @param Article $article
      * @return \Illuminate\Http\JsonResponse
      */
-    public function likeUsers(Request $request, Article $article)
+    public function users(Request $request, Article $article)
     {
         $users = UserSimple::collection($article->users()->orderBy('created_at', 'desc')->paginate(10));
 
