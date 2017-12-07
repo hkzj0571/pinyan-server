@@ -64,7 +64,7 @@ class ArticlesController extends Controller
      */
     public function like(Request $request, Article $article)
     {
-        $toggled = (boolean) count($article->likes()->toggle(auth()->user()->id)['attached']);
+        $toggled = (boolean) count($article->users()->toggle(auth()->user()->id)['attached']);
 
         return succeed(['type' => $toggled]);
     }
@@ -101,7 +101,22 @@ class ArticlesController extends Controller
 
     public function comments(Request $request, Article $article)
     {
-        $comments = $article->comments()->whereNull('reply_id')->orderBy('created_at','desc')->paginate(10);
+        $sort     = $request->get('sort');
+        $only     = $request->get('only');
+
+        $comments = $article->comments()->whereNull('reply_id')->when($only, function($query) use ($article) {
+            return $query->where('user_id', $article->user_id);
+        })->where(function($query) use ($sort) {
+            switch ($sort) {
+                case 'desc':
+                    return $query->orderBy('created_at', 'desc');
+                case 'asc':
+                    return $query->orderBy('created_at', 'asc');
+                default:
+                    return $query->orderBy('vote_count', 'desc');
+            }
+        })->paginate(10);
+
         return succeed(['comments' => CommentComplex::collection($comments)]);
     }
 }

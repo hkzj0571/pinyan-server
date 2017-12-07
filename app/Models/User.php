@@ -229,4 +229,14 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Article::class,'users_read_articles')->withTimestamps();
     }
+
+    /**
+     * 用户赞过的评论
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function votes()
+    {
+        return $this->belongsToMany(Comment::class,'users_vote_comments');
+    }
 }

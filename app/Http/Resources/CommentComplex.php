@@ -19,6 +19,8 @@ class CommentComplex extends Resource
             'content'    => $this->content,
             'user'       => new UserSimple($this->user),
             'vote_count' => $this->vote_count,
+            'reply'      => $this->reply,
+            'childers'   => CommentSimple::collection($this->childers),
             'created_at' => $this->created_at,
         ];
     }

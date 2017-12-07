@@ -49,6 +49,21 @@ class Comment extends Model
      */
     public function reply()
     {
-        return is_null($this->reply_id) ? false : $this->belongsTo(self::class);
+        return $this->belongsTo(self::class);
+    }
+
+    public function childers()
+    {
+        return $this->hasMany(self::class, 'reply_id');
+    }
+
+    /**
+     * 赞过此评论的用户
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function votes()
+    {
+        return $this->belongsToMany(User::class,'users_vote_comments');
     }
 }
