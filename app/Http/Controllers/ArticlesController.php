@@ -45,9 +45,16 @@ class ArticlesController extends Controller
         return succeed(['article' => new ArticleSimple($article)]);
     }
 
+    /**
+     * 显示文章
+     *
+     * @param Request $request
+     * @param Article $article
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function show(Request $request, Article $article)
     {
-        $article->increment('read_count');
+        app(\App\Cache\Articles\Read::class)->make($article);
         return succeed(['article' => new ArticleComplex($article)]);
     }
 
@@ -56,25 +63,9 @@ class ArticlesController extends Controller
      */
     public function like(Request $request, Article $article)
     {
-        $toggled = $article->likes()->toggle(auth()->user()->id);
+        $toggled = (boolean) count($article->likes()->toggle(auth()->user()->id)['attached']);
 
-        $toggled['attached']
-            ? $article->increment('like_count')
-            : $article->decrement('like_count');
-
-        return succeed(['type' => $toggled['attached'] ? 'attached' : 'detached']);
-    }
-
-    /**
-     * 判断用户是否喜欢此文章
-     *
-     * @param Request $request
-     * @param Article $article
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function isLike(Request $request, Article $article)
-    {
-        return succeed(['is_like' => $article->likes()->where('user_id', auth()->user()->id)->exists()]);
+        return succeed(['type' => $toggled]);
     }
 
     /**
@@ -86,11 +77,18 @@ class ArticlesController extends Controller
      */
     public function likeUsers(Request $request, Article $article)
     {
-        $users = UserSimple::collection($article->likes()->orderBy('created_at', 'desc')->paginate(10));
+        $users = UserSimple::collection($article->users()->orderBy('created_at', 'desc')->paginate(10));
 
         return succeed(['users' => $users]);
     }
 
+    /**
+     * 更新文章
+     *
+     * @param Request $request
+     * @param Article $article
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function update(Request $request, Article $article)
     {
         $needs = $this->validate($request, rules('article.update'));

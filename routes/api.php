@@ -78,8 +78,6 @@ Route::prefix(api_version())->group(function($router) {
             $router->put('{article}', 'ArticlesController@update');
             /* 喜欢这篇文章 */
             $router->post('{article}/like', 'ArticlesController@like');
-            /* 判断当前用户是否喜欢了这篇文章 */
-            $router->post('{article}/is_like', 'ArticlesController@isLike');
             /* 拉取喜欢这篇文章的用户 */
             $router->post('{article}/like_users', 'ArticlesController@likeUsers');
         });

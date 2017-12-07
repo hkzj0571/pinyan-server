@@ -221,4 +221,12 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Topic::class, 'users_manage_topics')->withTimestamps()->wherePivot('is_creator', false);
     }
+
+    /**
+     * 用户阅读文章的记录
+     */
+    public function read()
+    {
+        return $this->belongsToMany(Article::class,'users_read_articles')->withTimestamps();
+    }
 }

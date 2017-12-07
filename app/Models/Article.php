@@ -44,6 +44,16 @@ class Article extends Model
         return @array_collapse($result)[1];
     }
 
+    public function getReadCountAttribute()
+    {
+        return $this->read()->count();
+    }
+
+    public function getLikeCountAttribute()
+    {
+        return $this->users()->count();
+    }
+
     /**
      * 此文章的发布用户
      *
@@ -69,7 +79,7 @@ class Article extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function likes()
+    public function users()
     {
         return $this->belongsToMany(User::class, 'users_like_articles')->withTimestamps();
     }
@@ -82,5 +92,15 @@ class Article extends Model
     public function comments()
     {
         return $this->hasMany(Comment::class);
+    }
+
+    /**
+     * 用户阅读文章的记录
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function read()
+    {
+        return $this->belongsToMany(User::class,'users_read_articles')->withTimestamps();
     }
 }
