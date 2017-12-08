@@ -2,7 +2,7 @@
 
 namespace App\Machines;
 
-abstract class Machine
+class Machine
 {
-    abstract public static function make(array $params);
+    
 }

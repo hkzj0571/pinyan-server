@@ -4,7 +4,17 @@ namespace App\Machines;
 
 class NewArticleMachine extends Machine
 {
-    public static function make(array $params)
+    public function make()
+    {
+
+    }
+
+    public function generate()
+    {
+
+    }
+
+    public function remove()
     {
 
     }
