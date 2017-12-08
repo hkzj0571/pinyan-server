@@ -239,4 +239,15 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Comment::class,'users_vote_comments')->withTimestamps();
     }
+
+
+    /**
+     * 用户的所有动态
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function machines()
+    {
+        return $this->hasMany(Machine::class);
+    }
 }
