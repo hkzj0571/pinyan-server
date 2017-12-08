@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\Json\Resource;
 class MachineComplex extends Resource
 {
     protected $medium = [
+        'like'   => \App\Machines\LikeMachine::class,
         'reply'   => \App\Machines\ReplyMachine::class,
         'comment' => \App\Machines\CommentMachine::class,
         'article' => \App\Machines\ArticleMachine::class,

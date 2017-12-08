@@ -66,6 +66,10 @@ class ArticlesController extends Controller
     {
         $toggled = (boolean) count($article->users()->toggle(auth()->user()->id)['attached']);
 
+        $action = $toggled ? 'make' : 'remove';
+
+        app(\App\Machines\LikeMachine::class)->$action($article);
+
         return succeed(['type' => $toggled]);
     }
 

@@ -25,4 +25,15 @@ class BaseMachine
 
         Machine::create($need);
     }
+
+    public function detch($causer)
+    {
+        $where = [
+            'causer_id' => $causer,
+            'user_id' => $this->user_id,
+            'action'    => $this->action,
+        ];
+
+        Machine::where($where)->delete();
+    }
 }

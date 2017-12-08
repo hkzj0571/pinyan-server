@@ -25,6 +25,9 @@ class ArticleSimple extends Resource
             'user'           => new UserSimple($this->user),
             'comments_count' => $this->comments()->count(),
             'created_at'     => $this->created_at,
+            'like_at'        => $this->when($this->pivot && @$this->pivot->created_at, function() {
+                return hommization($this->pivot->created_at);
+            }),
         ];
     }
 }
