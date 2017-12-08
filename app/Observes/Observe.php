@@ -2,6 +2,7 @@
 
 namespace App\Observes;
 
+use App\Models\Comment;
 use App\Models\User;
 use App\Models\Article;
 
@@ -11,5 +12,6 @@ class Observe
     {
         User::observe(UserObserve::class);
         Article::observe(ArticleObserve::class);
+        Comment::observe(CommentObserve::class);
     }
 }

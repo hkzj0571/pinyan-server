@@ -8,6 +8,6 @@ class ArticleObserve
 {
     public function created(Article $article)
     {
-        app(\App\Machines\NewArticleMachine::class)->make($article);
+        app(\App\Machines\ArticleMachine::class)->make($article);
     }
 }

@@ -4,7 +4,7 @@ namespace App\Machines;
 
 use App\Models\Article;
 
-class NewArticleMachine extends BaseMachine
+class ArticleMachine extends BaseMachine
 {
     public $action = 'article';
 
