@@ -2,6 +2,7 @@
 
 namespace App\Machines;
 
+use App\Http\Resources\ArticleSimple;
 use App\Models\Article;
 
 class ArticleMachine extends BaseMachine
@@ -17,9 +18,11 @@ class ArticleMachine extends BaseMachine
         $this->fetch($params, $article->id);
     }
 
-    public function generate()
+    public function generate(array $params)
     {
-
+        return [
+            'article' => new ArticleSimple(Article::find($params['article_id'])),
+        ];
     }
 
     public function remove()

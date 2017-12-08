@@ -69,6 +69,8 @@ Route::prefix(api_version())->group(function($router) {
             $router->get('follower','UsersController@follower');
             /** 关注用户 */
             $router->post('follow','UsersController@follow');
+            /** 用户动态 */
+            $router->get('machines','UsersController@machines');
         });
 
         Route::prefix('article')->group(function($router) {
@@ -104,10 +106,6 @@ Route::prefix(api_version())->group(function($router) {
             $router->post('{topic}', 'TopicsController@topic');
             $router->put('{topic}', 'TopicsController@update');
             $router->get('users', 'TopicsController@users');
-        });
-
-        Route::prefix('machines')->group(function($router){
-            $router->get('/','MachinesController@index');
         });
 
     });

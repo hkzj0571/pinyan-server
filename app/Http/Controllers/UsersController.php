@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\MachineComplex;
 use App\Http\Resources\UserSimple;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -197,10 +198,17 @@ class UsersController extends Controller
 
     public function follow(Request $request)
     {
-        $user_id = array_first($this->validate($request,rules('user.follow')));
+        $user_id = array_first($this->validate($request, rules('user.follow')));
 
         auth()->user()->followeds()->toggle($user_id);
 
         return succeed();
+    }
+
+    public function machines(Request $request)
+    {
+        $machines = auth()->user()->machines()->orderBy('created_at', 'desc')->paginate(10);
+
+        return succeed(['machines' => MachineComplex::collection($machines)]);
     }
 }
