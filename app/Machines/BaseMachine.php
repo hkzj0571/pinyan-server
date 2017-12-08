@@ -11,16 +11,16 @@ class BaseMachine
 
     public function __construct()
     {
-        $this->user_id = auth()->guard('api')->user()->id;
+        $this->user_id = auth()->check() ? auth()->guard('api')->user()->id : null;
     }
 
-    public function fetch(array $params, $causer)
+    public function fetch(array $params, $causer, $user_id = null)
     {
         $need = [
             'data'      => $params,
             'action'    => $this->action,
             'causer_id' => $causer,
-            'user_id'   => $this->user_id,
+            'user_id'   => $user_id ? : $this->user_id,
         ];
 
         Machine::create($need);
@@ -30,7 +30,7 @@ class BaseMachine
     {
         $where = [
             'causer_id' => $causer,
-            'user_id' => $this->user_id,
+            'user_id'   => $this->user_id,
             'action'    => $this->action,
         ];
 

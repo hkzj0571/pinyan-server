@@ -55,6 +55,8 @@ class AuthController extends Controller
 
         $tokens = $this->authenticate();
 
+        app(\App\Machines\RegisterdMachine::class)->make($user);
+
         return succeed(['token' => $tokens, 'user' => new UserComplex($user)]);
     }
 

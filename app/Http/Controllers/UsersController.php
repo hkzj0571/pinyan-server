@@ -200,7 +200,11 @@ class UsersController extends Controller
     {
         $user_id = array_first($this->validate($request, rules('user.follow')));
 
-        auth()->user()->followeds()->toggle($user_id);
+        $toggled = (boolean) count(auth()->user()->followeds()->toggle($user_id)['attached']);
+
+        $action = $toggled ? 'make' : 'remove';
+
+        app(\App\Machines\FollowMachine::class)->$action(User::find($user_id));
 
         return succeed();
     }

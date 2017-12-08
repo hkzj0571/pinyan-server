@@ -25,6 +25,10 @@ class CommentsController extends Controller
 
         $result ? $comment->increment('vote_count') : $comment->decrement('vote_count');
 
+        $action = $result ? 'make' : 'remove';
+
+        app(\App\Machines\VoteMachine::class)->$action($comment);
+
         return succeed(['type' => $result]);
     }
 }

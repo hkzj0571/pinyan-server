@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\CommentComplex;
 use App\Models\Topic;
 use App\Models\Article;
 use Illuminate\Http\Request;
@@ -10,6 +9,7 @@ use App\Http\Resources\UserSimple;
 use App\Http\Resources\TopicSimple;
 use App\Http\Resources\ArticleSimple;
 use App\Http\Resources\ArticleComplex;
+use App\Http\Resources\CommentComplex;
 
 class ArticlesController extends Controller
 {

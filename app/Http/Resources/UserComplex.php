@@ -15,21 +15,21 @@ class UserComplex extends Resource
     public function toArray($request)
     {
         return [
-            'id'            => $this->id,
-            'avatar'        => $this->avatar,
-            'name'          => $this->name,
-            'email'         => $this->email,
-            'is_active'     => $this->is_active,
-            'website'       => $this->website,
-            'gender'        => $this->gender,
-            'describe'      => $this->describe,
-            'resume'        => $this->resume,
-            'wechat_qrcode' => $this->wechat_qrcode,
-            'follower_count'  => $this->follower_count,
-            'followed_count'  => $this->followed_count,
-            'article_count'   => $this->article_count,
-            'create_topics' => TopicSimple::collection($this->creatorTopics()->orderBy('created_at', 'desc')->get()),
-            'created_at'    => $this->created_at,
+            'id'             => $this->id,
+            'avatar'         => $this->avatar,
+            'name'           => $this->name,
+            'email'          => $this->email,
+            'is_active'      => $this->is_active,
+            'website'        => $this->website,
+            'gender'         => $this->gender,
+            'describe'       => $this->describe,
+            'resume'         => $this->resume,
+            'wechat_qrcode'  => $this->wechat_qrcode,
+            'follower_count' => $this->follower_count,
+            'followed_count' => $this->followed_count,
+            'article_count'  => $this->article_count,
+            'create_topics'  => TopicSimple::collection($this->creatorTopics()->orderBy('created_at', 'desc')->get()),
+            'created_at'     => $this->created_at,
         ];
     }
 }
