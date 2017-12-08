@@ -15,8 +15,9 @@ class CreateMachinesTable extends Migration
     {
         Schema::create('machines', function(Blueprint $table) {
             $table->increments('id');
-            $table->string('action')->index();
             $table->json('data')->index();
+            $table->string('action')->index();
+            $table->integer('causer_id')->nullable()->index();
             $table->integer('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
