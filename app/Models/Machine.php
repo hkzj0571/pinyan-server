@@ -11,6 +11,16 @@ class Machine extends Model
 
     protected $guarded = [];
 
+    public function setDataAttribute($data)
+    {
+        $this->attributes['data'] = json_encode($data, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function getDataAttribute($data)
+    {
+        return json_decode($data, true);
+    }
+
     /**
      * 动态所属的用户
      *

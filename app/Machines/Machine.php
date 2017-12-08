@@ -13,12 +13,12 @@ class Machine
         $this->model = $model;
     }
 
-    public function touch(array $data, $action)
+    public function touch($data, $action, $causer)
     {
         $params = [
             'action'    => $action,
             'user_id'   => auth()->guard('api')->user()->id,
-            'causer_id' => 1,
+            'causer_id' => $causer,
         ];
 
         $this->model->create();
