@@ -4,15 +4,17 @@ namespace App\Machines;
 
 use App\Models\Article;
 
-class NewArticleMachine extends Machine
+class NewArticleMachine extends BaseMachine
 {
+    public $action = 'article';
+
     public function make(Article $article)
     {
         $params = [
             'article_id' => $article->id,
         ];
 
-        $this->touch($params);
+        $this->fetch($params, $article->id);
     }
 
     public function generate()
