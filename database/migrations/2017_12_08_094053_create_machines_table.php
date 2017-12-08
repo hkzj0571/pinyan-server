@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTimelinesTable extends Migration
+class CreateMachinesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateTimelinesTable extends Migration
      */
     public function up()
     {
-        Schema::create('timelines', function (Blueprint $table) {
+        Schema::create('machines', function(Blueprint $table) {
             $table->increments('id');
-            $table->string('action');
-            $table->integer('object_id');
+            $table->string('action')->index();
+            $table->json('data')->index();
             $table->integer('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
@@ -29,6 +29,6 @@ class CreateTimelinesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('timelines');
+        Schema::dropIfExists('machines');
     }
 }

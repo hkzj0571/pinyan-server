@@ -4,5 +4,5 @@ namespace App\Machines;
 
 abstract class Machine
 {
-    abstract public function make(array $params);
+    abstract public static function make(array $params);
 }
