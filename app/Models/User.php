@@ -73,6 +73,17 @@ class User extends Authenticatable
     }
 
     /**
+     * 账号激活时间
+     *
+     * @param $date
+     * @return string|static
+     */
+    public function getActivedAtAttribute($date)
+    {
+        return $this->hommization($date);
+    }
+
+    /**
      * 该用户关注的人数
      *
      * @return int

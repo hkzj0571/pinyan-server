@@ -22,9 +22,10 @@ function rules($rule_name)
 
 function hommization($date)
 {
-    return \Carbon\Carbon::now() > \Carbon\Carbon::parse($date)->addDays(10)
-        ? \Carbon\Carbon::parse($date)
-        : \Carbon\Carbon::parse($date)->diffForHumans();
+    if (\Carbon\Carbon::now() > \Carbon\Carbon::parse($date)->addDays(30)) {
+        return \Carbon\Carbon::parse($date)->toDateTimeString();
+    }
+    return \Carbon\Carbon::parse($date)->diffForHumans();
 }
 
 function api_version()

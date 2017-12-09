@@ -11,6 +11,7 @@ class MachineComplex extends Resource
         'vote'      => \App\Machines\VoteMachine::class,
         'reply'     => \App\Machines\ReplyMachine::class,
         'follow'    => \App\Machines\FollowMachine::class,
+        'actived'   => \App\Machines\ActivedMachine::class,
         'comment'   => \App\Machines\CommentMachine::class,
         'article'   => \App\Machines\ArticleMachine::class,
         'registerd' => \App\Machines\RegisterdMachine::class,

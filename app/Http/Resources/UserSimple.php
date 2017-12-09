@@ -31,6 +31,7 @@ class UserSimple extends Resource
             'is_creator'       => $this->when($this->pivot, @$this->pivot->is_creator),
             'is_follow'        => auth()->guard('api')->check() ? auth()->guard('api')->user()->followeds()->where('followed_id', $this->id)->exists() : false,
             'created_at'       => $this->created_at,
+            'actived_at'       => $this->actived_at,
         ];
     }
 }

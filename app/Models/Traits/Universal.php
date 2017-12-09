@@ -32,9 +32,10 @@ trait Universal
 
     public function hommization($date)
     {
-        return Carbon::now() > Carbon::parse($date)->addDays(10)
-            ? Carbon::parse($date)
-            : Carbon::parse($date)->diffForHumans();
+        if (Carbon::now() > Carbon::parse($date)->addDays(30)) {
+            return Carbon::parse($date)->toDateTimeString();
+        }
+        return Carbon::parse($date)->diffForHumans();
     }
 
     public function getCreatedAtAttribute($date)

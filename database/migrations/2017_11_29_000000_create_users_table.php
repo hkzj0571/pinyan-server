@@ -28,6 +28,7 @@ class CreateUsersTable extends Migration
             $table->string('wechat_qrcode')->nullable()->comment('微信二维码');
             $table->boolean('is_active')->default(false)->comment('是否激活');
             $table->boolean('is_nasty')->default(false)->comment('是否被拉入黑名单');
+            $table->timestamp('actived_at')->nullable()->comment('账号激活时间');
             $table->rememberToken();
             $table->timestamps();
         });
