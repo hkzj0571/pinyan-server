@@ -6,6 +6,7 @@ use App\Events\UserRegisterd;
 use App\Exceptions\UnauthorizedException;
 use App\Http\Resources\UserComplex;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Traits\ProxyHelpers;
 
@@ -99,8 +100,12 @@ class AuthController extends Controller
     {
         $user = User::active(false)->where('active_token', request('token'))->first();
 
-        return $user && $user->update(['is_active' => true]) && $user->resetActiveToken()
-            ? succeed('邮箱已验证成功')
-            : failed('验证邮箱失败，账号状态异常或 Token 错误');
+        if ($user && $user->update(['is_active' => true]) && $user->resetActiveToken()) {
+            $user->update(['actived_at' => Carbon::now()]);
+            app(\App\Machines\ActivedMachine::class)->make($user);
+            return succeed('邮箱已验证成功');
+        } else {
+            return failed('验证邮箱失败，账号状态异常或 Token 错误');
+        }
     }
 }

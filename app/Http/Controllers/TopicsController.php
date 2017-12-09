@@ -29,13 +29,13 @@ class TopicsController extends Controller
 
     public function focus(Request $request, Topic $topic)
     {
-        $toggled = $topic->users()->toggle(auth()->user()->id);
+        $toggled = (boolean) count($topic->users()->toggle(auth()->user()->id)['attached']);
 
-        $toggled['attached']
-            ? $topic->increment('follower_count')
-            : $topic->decrement('follower_count');
+        $action = $toggled ? 'make' : 'remove';
 
-        return succeed(['type' => $toggled['attached'] ? 'attached' : 'detached']);
+        app(\App\Machines\FocusMachine::class)->$action($topic);
+
+        return succeed(['type' => $toggled]);
     }
 
     public function topic(Request $request, Topic $topic)
