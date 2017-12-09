@@ -24,6 +24,7 @@ class TopicComplex extends Resource
             'creator'        => new UserSimple($this->creatorUser()->first()),
             'manages'        => UserSimple::collection($this->manageUsers()->orderBy('created_at', 'desc')->get()),
             'created_at'     => $this->created_at,
+            'is_focus'       => auth()->guard('api')->check() ? auth()->guard('api')->user()->topics()->where('topic_id',$this->id)->exists() : false,
         ];
     }
 }

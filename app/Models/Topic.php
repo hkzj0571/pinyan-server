@@ -12,6 +12,26 @@ class Topic extends Model
     protected $guarded = [];
 
     /**
+     * 访问器，查询出专题文章数
+     *
+     * @return int
+     */
+    public function getArticleCountAttribute()
+    {
+        return $this->articles()->count();
+    }
+
+    /**
+     * 访问器，查询出专题关注人数
+     *
+     * @return int
+     */
+    public function getFollowerCountAttribute()
+    {
+        return $this->users()->count();
+    }
+
+    /**
      * 访问器，对 describe 属性进行换行操作
      *
      * @param $describe

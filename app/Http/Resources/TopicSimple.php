@@ -22,6 +22,9 @@ class TopicSimple extends Resource
             'article_count'  => $this->article_count,
             'follower_count' => $this->follower_count,
             'created_at'     => $this->created_at,
+            'focus_at'       => $this->when($this->pivot && @$this->pivot->created_at, function() {
+                return hommization($this->pivot->created_at);
+            }),
         ];
     }
 }

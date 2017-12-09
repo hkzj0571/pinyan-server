@@ -10,6 +10,7 @@ class MachineComplex extends Resource
         'like'      => \App\Machines\LikeMachine::class,
         'vote'      => \App\Machines\VoteMachine::class,
         'reply'     => \App\Machines\ReplyMachine::class,
+        'focus'     => \App\Machines\FocusMachine::class,
         'follow'    => \App\Machines\FollowMachine::class,
         'actived'   => \App\Machines\ActivedMachine::class,
         'comment'   => \App\Machines\CommentMachine::class,
