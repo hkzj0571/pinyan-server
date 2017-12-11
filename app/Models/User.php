@@ -9,7 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, Notifiable, Universal;
+    use Notifiable,HasApiTokens, Notifiable, Universal;
 
     /**
      * The attributes that are mass assignable.
